@@ -16,7 +16,7 @@ var Categories = {
 		playerUrl: "http://player.vimeo.com/video/",
 		categoryKey:null,
 		url:"https://api.vimeo.com/tags/fun/videos?per_page=5",
-		pageUrl:"https://api.vimeo.com/tags/fun/videos?per_page=25",
+		pageUrl:"https://api.vimeo.com/tags/fun/videos?per_page=20",
 		searchUrl:"https://api.vimeo.com/videos",
 		dataType: "json",
 		apiKey:"",
@@ -32,7 +32,7 @@ var Categories = {
 		iconUrl: "img/music_icon.jpg",
 		url: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=5&category=1",
 		searchUrl: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=5&category=1",
-		pageUrl: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=25&category=1",
+		pageUrl: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=20&category=1",
 		dataType: "jsonp",
 		responseDataKey: "files"
 	},
@@ -41,8 +41,8 @@ var Categories = {
 		idName: "app",
 		iconUrl: "img/app_icon.jpg",
 		url: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=5&category=6",
-		searchUrl: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=25&category=6",
-		pageUrl: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=25&category=6",
+		searchUrl: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=20&category=6",
+		pageUrl: "https://api.4shared.com/v0/files.jsonp?oauth_consumer_key=0d3484a1de10c0a182316553199137b2&limit=20&category=6",
 		dataType: "jsonp",
 		responseDataKey: "files"
 	},
@@ -91,6 +91,14 @@ var storeManager = {
 	singleCategoryView: function(event){
 		storeManager.toggleMenu();
 		$("#msg").html("");
+		
+		//if home page link was clicked
+		if($(this).attr("category") === storeManager.homePageKey)
+		{
+			storeManager.fetchAllRecentCategory();
+			return;
+		}
+
 		var category = Categories[$(this).attr("category")];
 		storeManager.page = category.idName;
 		
@@ -131,11 +139,12 @@ var storeManager = {
 	},
 
 	
-	//fetches recent entries of all categories
+	//fetches recent entries of all categories...this serves as the Home Page
 	fetchAllRecentCategory: function(){
 		$("#msg").html("");
 		storeManager.page = storeManager.homePageKey;
 		$.each(Categories, function(key, datum){
+				$("#"+ datum.idName).parent().show();	
 				storeManager.ajaxCategory(datum, storeManager.homeUrlKey);
 			}
 		);
@@ -174,22 +183,20 @@ var storeManager = {
 						var $liElement = $("<li></li>");
 						var $imgElement = $("<img>");
 						var $pElement = $("<p></p>");
-						$pElement.html(datum.name.substr(0, 25) + "...");
+						$pElement.html(datum.name.substr(0, 25) + "...").attr("title", datum.name);
 						if(category.idName ==="video")
 						{
 							var $iframe = $("<iframe width='180' height='180' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>");
 							$iframe.attr("src", category.playerUrl + datum.uri.substr(8));
-							$liElement.html($iframe);
-							$liElement.append($pElement);
+							$liElement.html($iframe).append($pElement);
 							$outputSection.append($liElement);
 						}
 						else
 						{
 							$imgElement.attr("src", category.iconUrl);	
 							var $aElement = $("<a target='_blank'></a>");
-							$aElement.attr("href", datum.downloadPage);
-							$liElement.html($imgElement);
-							$liElement.append($pElement);
+							$aElement.attr("href", datum.downloadPage).attr("title", "Click for Download Page");
+							$liElement.html($imgElement).append($pElement);
 							$aElement.html($liElement);
 							$outputSection.append($aElement);
 						}

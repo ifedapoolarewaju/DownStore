@@ -175,6 +175,7 @@ selections by class
 	height: 200px;
 	padding:  8px 5px;
 	margin: 10px 10px;
+	cursor: pointer;
 }
 
 .media_list li:hover{
@@ -316,7 +317,7 @@ selections by class
 /***************************************
 Responsiveness
 ***************************************/
-@media screen and (max-width: 560px) and (min-width: 320px){
+@media screen and (max-width: 560px){
 
 	.media_list img{
 		margin: 0 auto;
