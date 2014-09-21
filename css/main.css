@@ -121,7 +121,7 @@ selections by class
 		width: 0px; 
 		color:#444;
 		font-weight: bold;
-		font-family: cursive;
+		font-family: cursive, 'Righteous';
 		font-size: 0em;
 	}
 
@@ -220,7 +220,7 @@ selections by class
 #menu{
 	position: absolute;
 	top:20px;
-	right: 68px;
+	right: 65px;
 	display: block;
 	padding: 5px 5px;
 	border-radius: 1px;
