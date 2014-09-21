@@ -344,6 +344,8 @@ Responsiveness
 		display: block;
 		float: right;
 		clear: both;
+		border-left: 1px solid #89ce1b;
+		background-color: #fff;
 	}
 
 
